@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>node static page</title>
+</head>
+<body>
+  <h2>这是首页</h2>
+  <script type="text/javascript">
+    console.log(url.parse(request.url))
+    var a = url.parse(request.url)
+    var b = a.query.split("&")
+    var newObj = {}
+    for(var i=0; i<b.length; i++){
+        var c = b[i].split("=")
+        newObj[c[0]] = c[1]
+    }
+    console.log(newObj)
+
+
+    function getContent(id){ //27884
+      http.get('http://app3.qdaily.com/app3/articles/detail/'+ id +'.json', function (response) {
+          var body = [];
+          var dst = '/';
+          var writeStream = fs.createWriteStream(dst);
+          // console.log(response)
+          response.on('data', function (chunk) {
+              body.push(chunk);
+              writeStream.write(chunk);
+          });
+
+          response.on('end', function () {
+              body = Buffer.concat(body);
+              // console.log(body.toString());
+          });
+      });
+    }
+  </script>
+</body>
+</html>
